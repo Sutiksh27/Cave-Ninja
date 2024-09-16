@@ -1,0 +1,116 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5da7ppetbnbc"]
+
+[sub_resource type="SystemFont" id="SystemFont_xn0ss"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_xct16"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_fp541"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_scsfd"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_xue5p"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="SystemFont" id="SystemFont_yn8t4"]
+font_names = PackedStringArray("Impact")
+
+[node name="ControlsDisplayInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 25
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xn0ss")
+theme_override_font_sizes/font_size = 24
+text = "Movement"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xct16")
+theme_override_font_sizes/font_size = 24
+text = "Keybind"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xn0ss")
+theme_override_font_sizes/font_size = 24
+text = "Jump"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xct16")
+theme_override_font_sizes/font_size = 24
+text = "Up Arrow"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_fp541")
+theme_override_font_sizes/font_size = 24
+text = "Move Left"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_scsfd")
+theme_override_font_sizes/font_size = 24
+text = "Left Arrow"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xue5p")
+theme_override_font_sizes/font_size = 24
+text = "Move Right"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_yn8t4")
+theme_override_font_sizes/font_size = 24
+text = "Right Arrow"

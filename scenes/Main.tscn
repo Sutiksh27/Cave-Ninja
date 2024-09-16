@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://d1wfecxmiv5by"]
+
+[ext_resource type="Script" path="res://scripts/level_manager.gd" id="1_bhd1o"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_oft82"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_rveoo"]
+[ext_resource type="Texture2D" uid="uid://crcsxw73syjpc" path="res://assets/Items/Treasure/GoldKey.png" id="4_5x6jf"]
+[ext_resource type="PackedScene" uid="uid://dpsdumn3y3rhr" path="res://ui/pause_menu.tscn" id="5_x3ros"]
+
+[node name="Game" type="Node2D"]
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("1_bhd1o")
+
+[node name="CurrentLevel" type="Node" parent="."]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_oft82")
+
+[node name="Timer" type="Timer" parent="GameManager"]
+wait_time = 2.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_rveoo")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/HUD"]
+position = Vector2(30, 31)
+scale = Vector2(3, 3)
+texture = ExtResource("4_5x6jf")
+
+[node name="KeyLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 12.0
+offset_right = 104.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 24
+text = "0"
+
+[node name="LifeLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 60.0
+offset_right = 101.0
+offset_bottom = 94.0
+theme_override_font_sizes/font_size = 24
+text = "Lives: "
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 14.0
+offset_right = 710.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 24
+text = "Time: "
+
+[node name="WinLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 551.0
+offset_top = 335.0
+offset_right = 710.0
+offset_bottom = 369.0
+theme_override_font_sizes/font_size = 24
+text = "Time: 22.0000"
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("5_x3ros")]

@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://cfp1pg45hjbso"]
+
+[ext_resource type="Texture2D" uid="uid://c0yo5bt4uowgp" path="res://assets/ball.png" id="1_6bwoj"]
+[ext_resource type="Script" path="res://scripts/wall_dust_particles.gd" id="2_0hu2a"]
+
+[sub_resource type="Gradient" id="Gradient_1gquv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gi4ra"]
+gradient = SubResource("Gradient_1gquv")
+
+[sub_resource type="Curve" id="Curve_0lllq"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.233333, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_34n06"]
+curve = SubResource("Curve_0lllq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3usr5"]
+lifetime_randomness = 0.32
+particle_flag_disable_z = true
+spread = 20.73
+initial_velocity_min = 140.0
+initial_velocity_max = 169.02
+gravity = Vector3(0, 0, 0)
+scale_min = 0.03
+scale_max = 0.06
+scale_curve = SubResource("CurveTexture_34n06")
+color_ramp = SubResource("GradientTexture1D_gi4ra")
+
+[node name="WallDustParticles" type="GPUParticles2D"]
+z_index = 8
+emitting = false
+amount = 6
+process_material = SubResource("ParticleProcessMaterial_3usr5")
+texture = ExtResource("1_6bwoj")
+lifetime = 0.7
+explosiveness = 0.74
+script = ExtResource("2_0hu2a")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
