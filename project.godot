@@ -38,7 +38,7 @@ enabled=PackedStringArray("res://addons/github_to_itch/plugin.cfg", "res://addon
 [github_to_itch]
 
 config/itch_username="Sutiksh27"
-config/itch_project_name="CaveNinja"
+config/itch_project_name="Cave Ninja"
 
 [input]
 
