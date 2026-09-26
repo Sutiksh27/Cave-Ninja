@@ -66,7 +66,8 @@ jobs:
     permissions:
       contents: write  # push the version tag and create the release
     outputs:
-      version: ${{ steps.tag_version.outputs.new_version }}
+      # A re-run of an already-tagged commit gets no new tag; publish under the existing version
+      version: ${{ steps.tag_version.outputs.new_version || steps.tag_version.outputs.previous_version }}
     steps:
       - uses: actions/checkout@v7
 
@@ -76,19 +77,18 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Verify Tag
-        if: ${{ !steps.tag_version.outputs.new_tag }}
-        run: exit 1
-
       - uses: actions/download-artifact@v8
+        if: steps.tag_version.outputs.new_tag
         with:
           name: web
           path: exports/web
 
       - name: Zip
+        if: steps.tag_version.outputs.new_tag
         run: cd exports && zip -qr ../release-${{ steps.tag_version.outputs.new_tag }}.zip web
 
       - name: Create GitHub Release
+        if: steps.tag_version.outputs.new_tag
         uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
