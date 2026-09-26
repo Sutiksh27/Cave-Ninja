@@ -114,3 +114,23 @@ layout_mode = 2
 theme_override_fonts/font = SubResource("SystemFont_yn8t4")
 theme_override_font_sizes/font_size = 24
 text = "Right Arrow"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 160
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_xue5p")
+theme_override_font_sizes/font_size = 24
+text = "Slash"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_yn8t4")
+theme_override_font_sizes/font_size = 24
+text = "X"

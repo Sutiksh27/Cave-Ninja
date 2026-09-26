@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/shuriken.gd" id="1_shu"]
+[ext_resource type="Texture2D" path="res://assets/combat/shuriken.png" id="2_shu"]
+[ext_resource type="AudioStream" path="res://assets/sounds/coin.wav" id="3_shu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shu"]
+radius = 3.0
+
+[node name="Shuriken" type="Area2D"]
+z_index = 9
+collision_layer = 80
+script = ExtResource("1_shu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_shu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_shu")
+
+[node name="ReflectSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_shu")
+pitch_scale = 0.6
+bus = &"SoundEffects"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

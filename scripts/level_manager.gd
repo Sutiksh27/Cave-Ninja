@@ -9,9 +9,9 @@ var levels_directory: String = "res://scenes/levels/"
 # Reference to the current level instance
 var current_level: Node = null
 
-# Levels in play order. Level2 and Level3 are unfinished stubs (no keys or chest),
-# so they stay out of the sequence until they are built.
-const LEVEL_SEQUENCE: Array = ["Level1"]
+# Levels in play order. Level3 is an unfinished stub (no keys or chest),
+# so it stays out of the sequence until it is built.
+const LEVEL_SEQUENCE: Array = ["Level1", "Level2"]
 
 # Signals
 signal level_loaded(level: Node)

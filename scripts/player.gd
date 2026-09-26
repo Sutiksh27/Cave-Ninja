@@ -101,7 +101,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("attack") and attack_cooldown <= 0.0:
 		start_attack()
 	if attack_timer > ATTACK_TIME - ATTACK_ACTIVE_TIME:
-		for target in attack_hitbox.get_overlapping_bodies() + attack_hitbox.get_overlapping_areas():
+		for target in get_attack_targets():
 			if target.has_method("hit"):
 				target.hit()
 
@@ -131,6 +131,16 @@ func wall_jump(wall_dir: int):
 	jump_buffer_timer = 0.0
 	$JumpSound.play()
 	spawn_particles(jump_particles_scene, global_position + Vector2(wall_dir * 5, 0), Vector2(-wall_dir, 0))
+
+# Queries the physics space directly: an Area2D's overlap lists miss
+# objects when neither side has moved (e.g. slashing a ninja while standing still).
+func get_attack_targets() -> Array:
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.shape = attack_hitbox.get_node("CollisionShape2D").shape
+	query.transform = attack_hitbox.global_transform
+	query.collision_mask = attack_hitbox.collision_mask
+	query.collide_with_areas = true
+	return get_world_2d().direct_space_state.intersect_shape(query).map(func(hit): return hit.collider)
 
 func start_attack():
 	attack_timer = ATTACK_TIME

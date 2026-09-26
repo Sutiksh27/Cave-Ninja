@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_nin"]
+[ext_resource type="Texture2D" path="res://assets/combat/ninja_idle.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://assets/combat/ninja_attack.png" id="3_attack"]
+[ext_resource type="Texture2D" path="res://assets/combat/ninja_dead.png" id="4_dead"]
+[ext_resource type="AudioStream" path="res://assets/sounds/tap.wav" id="5_throw"]
+[ext_resource type="AudioStream" path="res://assets/sounds/explosion.wav" id="6_defeat"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_l"]
+atlas = ExtResource("2_idle")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle_r"]
+atlas = ExtResource("2_idle")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_throw_l"]
+atlas = ExtResource("3_attack")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_throw_r"]
+atlas = ExtResource("3_attack")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nin"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_dead")
+}],
+"loop": false,
+"name": &"Dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_l")
+}],
+"loop": true,
+"name": &"IdleLeft",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle_r")
+}],
+"loop": true,
+"name": &"IdleRight",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_throw_l")
+}],
+"loop": true,
+"name": &"ThrowLeft",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_throw_r")
+}],
+"loop": true,
+"name": &"ThrowRight",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nin"]
+size = Vector2(10, 14)
+
+[node name="Ninja" type="StaticBody2D"]
+z_index = 9
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("1_nin")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nin")
+animation = &"IdleLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_nin")
+
+[node name="ThrowSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_throw")
+pitch_scale = 1.6
+bus = &"SoundEffects"
+
+[node name="DefeatSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_defeat")
+bus = &"SoundEffects"
