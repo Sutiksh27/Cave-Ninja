@@ -9,6 +9,7 @@ extends Control
 
 func _ready():
 	win_label.text = ""
+	game_manager.level_started.connect(_on_level_started)
 	game_manager.keys_changed.connect(_on_keys_changed)
 	game_manager.deaths_changed.connect(_on_deaths_changed)
 	game_manager.round_time_changed.connect(_on_round_time_changed)
@@ -16,6 +17,10 @@ func _ready():
 	game_manager.level_finished.connect(_on_level_finished)
 	hint_timer.timeout.connect(func(): win_label.text = "")
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
+
+func _on_level_started():
+	hint_timer.stop()
+	win_label.text = ""
 
 func _on_keys_changed(keys, keys_required):
 	key_label.text = "%d/%d" % [keys, keys_required]

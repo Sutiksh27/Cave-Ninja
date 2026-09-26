@@ -11,6 +11,7 @@ var level_running = false
 
 @onready var level_manager: Node = $"../LevelManager"
 
+signal level_started
 signal keys_changed(keys: int, keys_required: int)
 signal deaths_changed(deaths: int)
 signal round_time_changed(round_time: float)
@@ -39,6 +40,7 @@ func _on_level_loaded(level: Node):
 		elif node is Player:
 			node.died.connect(_on_player_died)
 	level_running = true
+	level_started.emit()
 	keys_changed.emit(keys, keys_required)
 	deaths_changed.emit(deaths)
 

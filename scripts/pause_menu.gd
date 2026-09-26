@@ -6,7 +6,6 @@ extends Control
 @onready var options_btn: Button = $MarginContainer/VBoxContainer/OptionsBtn
 @onready var exit_menu_btn: Button = $MarginContainer/VBoxContainer/ExitMenuBtn
 @onready var options_menu: OptionsMenu = $OptionsMenu
-@onready var main_menu_scene: PackedScene = preload("res://ui/main_menu.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -33,7 +32,9 @@ func _on_options_btn_pressed() -> void:
 
 func _on_exit_to_menu_btn_pressed() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_packed(main_menu_scene)
+	# Loaded by path: preloading it here would be circular (the main menu preloads
+	# the game scene, which contains this pause menu) and yields an empty scene.
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 	
 func _on_exit_options_menu() -> void:
 	margin_container.visible = true
