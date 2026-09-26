@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://d1wfecxmiv5by"]
+
+[ext_resource type="Script" path="res://scripts/level_manager.gd" id="1_bhd1o"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_oft82"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_rveoo"]
+[ext_resource type="Texture2D" uid="uid://crcsxw73syjpc" path="res://assets/Items/Treasure/GoldKey.png" id="4_5x6jf"]
+[ext_resource type="PackedScene" uid="uid://dpsdumn3y3rhr" path="res://ui/pause_menu.tscn" id="5_x3ros"]
+
+[node name="Game" type="Node2D"]
+
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("1_bhd1o")
+
+[node name="CurrentLevel" type="Node" parent="."]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_oft82")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_rveoo")
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/HUD"]
+position = Vector2(30, 31)
+scale = Vector2(3, 3)
+texture = ExtResource("4_5x6jf")
+
+[node name="KeyLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 12.0
+offset_right = 136.0
+offset_bottom = 46.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "0/0"
+
+[node name="DeathLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 216.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "Deaths: 0"
+
+[node name="TimeLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 12.0
+offset_right = 120.0
+offset_bottom = 46.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 24
+text = "Time: 00:00.00"
+horizontal_alignment = 1
+
+[node name="WinLabel" type="Label" parent="CanvasLayer/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintTimer" type="Timer" parent="CanvasLayer/HUD"]
+wait_time = 2.5
+one_shot = true
+
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("5_x3ros")]

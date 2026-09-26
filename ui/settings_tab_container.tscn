@@ -1,0 +1,111 @@
+[gd_scene load_steps=5 format=3 uid="uid://p7nxqo7ccw02"]
+
+[ext_resource type="PackedScene" uid="uid://b60n4h0gjunut" path="res://ui/window_mode_btn.tscn" id="1_aa7b5"]
+[ext_resource type="PackedScene" uid="uid://duw8ljbg4i6xi" path="res://ui/resolution_mode_btn.tscn" id="2_nypod"]
+[ext_resource type="PackedScene" uid="uid://b5da7ppetbnbc" path="res://ui/controls_display_info.tscn" id="3_aw7h4"]
+[ext_resource type="PackedScene" uid="uid://d0pnomf8qlm1q" path="res://ui/audio_slider_settings.tscn" id="4_wry0o"]
+
+[node name="SettingsTabContainer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = 50.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 2
+
+[node name="Graphics" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Graphics"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Graphics/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Graphics/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="WindowModeBtn" parent="TabContainer/Graphics/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("1_aa7b5")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="ResolutionModeBtn" parent="TabContainer/Graphics/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_nypod")]
+layout_mode = 2
+
+[node name="Controls" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Controls"]
+layout_mode = 1
+offset_right = 64.0
+offset_bottom = 64.0
+theme_override_constants/margin_left = 270
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ControlsDisplayInfo" parent="TabContainer/Controls/MarginContainer" instance=ExtResource("3_aw7h4")]
+layout_mode = 2
+
+[node name="Sound" type="TabBar" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Sound"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Sound/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="MasterVolume" parent="TabContainer/Sound/MarginContainer/VBoxContainer" instance=ExtResource("4_wry0o")]
+layout_mode = 2
+
+[node name="MusicVolume" parent="TabContainer/Sound/MarginContainer/VBoxContainer" instance=ExtResource("4_wry0o")]
+layout_mode = 2
+bus_name = "Music"
+
+[node name="Sound Effects" parent="TabContainer/Sound/MarginContainer/VBoxContainer" instance=ExtResource("4_wry0o")]
+layout_mode = 2
+bus_name = "SoundEffects"

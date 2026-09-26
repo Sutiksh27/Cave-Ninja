@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=3 uid="uid://c377e3m1rf7hc"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_4ifla"]
+[ext_resource type="Texture2D" uid="uid://tm5jn85ey4mt" path="res://assets/Background/CaveBg.jpg" id="2_hkxct"]
+[ext_resource type="PackedScene" uid="uid://c5bnsgjapo6r4" path="res://ui/options_menu.tscn" id="3_euryc"]
+
+[sub_resource type="SystemFont" id="SystemFont_t3ubl"]
+font_names = PackedStringArray("Impact")
+subpixel_positioning = 0
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4ifla")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 713.0
+texture = ExtResource("2_hkxct")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = SubResource("SystemFont_t3ubl")
+theme_override_font_sizes/font_size = 48
+text = "Cave Ninja"
+horizontal_alignment = 1
+
+[node name="StartBtn" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 45)
+layout_direction = 1
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Start Game"
+
+[node name="OptionsBtn" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Options Menu"
+
+[node name="QuitBtn" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Quit Game"
+
+[node name="OptionsMenu" parent="." instance=ExtResource("3_euryc")]
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/StartBtn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]

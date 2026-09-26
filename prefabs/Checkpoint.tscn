@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/checkpoint.gd" id="1_cp"]
+[ext_resource type="Texture2D" path="res://assets/tiles/checkpoint.png" id="2_cp"]
+[ext_resource type="AudioStream" path="res://assets/sounds/tap.wav" id="3_cp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cp"]
+size = Vector2(14, 24)
+
+[node name="Checkpoint" type="Area2D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_cp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
+texture = ExtResource("2_cp")
+hframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_cp")
+
+[node name="ActivateSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_cp")
+bus = &"SoundEffects"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

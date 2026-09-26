@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqhbfw8nsl80t"]
+
+[ext_resource type="Texture2D" uid="uid://c0yo5bt4uowgp" path="res://assets/ball.png" id="1_bk8sk"]
+[ext_resource type="Script" path="res://scripts/jump_dust_particles.gd" id="2_pcmhb"]
+
+[sub_resource type="Gradient" id="Gradient_l730m"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yf1gl"]
+gradient = SubResource("Gradient_l730m")
+
+[sub_resource type="Curve" id="Curve_bm7sx"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.253333, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_8flo1"]
+curve = SubResource("Curve_bm7sx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_utvs2"]
+lifetime_randomness = 0.32
+particle_flag_disable_z = true
+spread = 65.0
+initial_velocity_min = 155.08
+initial_velocity_max = 197.33
+gravity = Vector3(0, 0, 0)
+scale_min = 0.03
+scale_max = 0.06
+scale_curve = SubResource("CurveTexture_8flo1")
+color_ramp = SubResource("GradientTexture1D_yf1gl")
+
+[node name="Jump_dust_particles" type="GPUParticles2D"]
+z_index = 8
+emitting = false
+amount = 25
+process_material = SubResource("ParticleProcessMaterial_utvs2")
+texture = ExtResource("1_bk8sk")
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.78
+script = ExtResource("2_pcmhb")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
