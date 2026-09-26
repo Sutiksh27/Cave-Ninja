@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://bvrd1ifgcvmmm" path="res://assets/sounds/coin.wav" id="2_34tri"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ivio"]
-size = Vector2(10, 6)
+size = Vector2(12, 12)
 
 [sub_resource type="Animation" id="Animation_pdnr0"]
 length = 0.001
@@ -118,6 +118,7 @@ shape = SubResource("RectangleShape2D_1ivio")
 
 [node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_34tri")
+bus = &"SoundEffects"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

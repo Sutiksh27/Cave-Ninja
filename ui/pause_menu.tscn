@@ -88,7 +88,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = SubResource("SystemFont_6s4a7")
 theme_override_font_sizes/font_size = 24
-text = "Exit Game"
+text = "Main Menu"
 
 [node name="OptionsMenu" parent="." instance=ExtResource("1_oy0tq")]
 visible = false

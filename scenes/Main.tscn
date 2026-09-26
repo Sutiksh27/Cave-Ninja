@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1wfecxmiv5by"]
+[gd_scene format=3 uid="uid://d1wfecxmiv5by"]
 
 [ext_resource type="Script" path="res://scripts/level_manager.gd" id="1_bhd1o"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_oft82"]
@@ -16,9 +16,6 @@ script = ExtResource("1_bhd1o")
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("2_oft82")
 
-[node name="Timer" type="Timer" parent="GameManager"]
-wait_time = 2.0
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" type="Control" parent="CanvasLayer"]
@@ -28,6 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("3_rveoo")
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/HUD"]
@@ -37,38 +35,57 @@ texture = ExtResource("4_5x6jf")
 
 [node name="KeyLabel" type="Label" parent="CanvasLayer/HUD"]
 layout_mode = 0
-offset_left = 64.0
+offset_left = 56.0
 offset_top = 12.0
-offset_right = 104.0
+offset_right = 136.0
 offset_bottom = 46.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 24
-text = "0"
+text = "0/0"
 
-[node name="LifeLabel" type="Label" parent="CanvasLayer/HUD"]
+[node name="DeathLabel" type="Label" parent="CanvasLayer/HUD"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 60.0
-offset_right = 101.0
-offset_bottom = 94.0
+offset_top = 56.0
+offset_right = 216.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 24
-text = "Lives: "
+text = "Deaths: 0"
 
 [node name="TimeLabel" type="Label" parent="CanvasLayer/HUD"]
-layout_mode = 0
-offset_left = 551.0
-offset_top = 14.0
-offset_right = 710.0
-offset_bottom = 48.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 12.0
+offset_right = 120.0
+offset_bottom = 46.0
+grow_horizontal = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 24
-text = "Time: "
+text = "Time: 00:00.00"
+horizontal_alignment = 1
 
 [node name="WinLabel" type="Label" parent="CanvasLayer/HUD"]
-layout_mode = 0
-offset_left = 551.0
-offset_top = 335.0
-offset_right = 710.0
-offset_bottom = 369.0
-theme_override_font_sizes/font_size = 24
-text = "Time: 22.0000"
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintTimer" type="Timer" parent="CanvasLayer/HUD"]
+wait_time = 2.5
+one_shot = true
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("5_x3ros")]

@@ -19,7 +19,7 @@ func set_name_label_text() -> void:
 	audio_name_label.text = str(bus_name) + " Volume"
 	
 func set_num_label_text() -> void:
-	audio_num_label.text = str(h_slider.value * 100)
+	audio_num_label.text = str(roundi(h_slider.value * 100))
 	
 func get_bus_name_by_idx() -> void:
 	bus_idx = AudioServer.get_bus_index(bus_name)

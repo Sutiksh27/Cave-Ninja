@@ -1,87 +1,74 @@
 extends Node
 
-const KEYS_REQUIRED: int = 3
-const PLAYER_START_POSITION: Vector2 = Vector2(100, 600)
-var keys: int = 0
-var start_time: float = 0.0
-var completion_times: Array = []
-var level_completed: bool = false
-var round_time = 0.0
-#@onready var key_text: Label = $KeyText
-#@onready var win_text: Label = $WinText
-@onready var level_manager: Node = $"../LevelManager"
-@onready var pause_menu: PauseMenu = $"../CanvasLayer/PauseMenu"
+const SAVE_PATH = "user://save.cfg"
+const LEVEL_END_DELAY = 3.0
 
-signal keys_changed(keys: int)
-signal lives_changed(lives: int)
+var keys: int = 0
+var keys_required: int = 0
+var deaths: int = 0
+var round_time = 0.0
+var level_running = false
+
+@onready var level_manager: Node = $"../LevelManager"
+
+signal keys_changed(keys: int, keys_required: int)
+signal deaths_changed(deaths: int)
 signal round_time_changed(round_time: float)
-signal win_time_published(win_time: float)
-signal level_finished
+signal hint_shown(text: String)
+signal level_finished(time: float, best_time: float, deaths: int)
 
 func _ready():
-	var current_level = get_node("/root/Game/CurrentLevel")
-	var chest = current_level.get_node(level_manager.current_level_name).get_node("Chest")
-	var hud = get_node("/root/Game/CanvasLayer/HUD")
-	start_time = Time.get_ticks_msec() / 1000.0
-	if chest:
-		print("Chest Found!")
-		chest.connect("level_completed", Callable(self, "_on_level_completed"))
-	if hud:
-		connect("keys_changed", Callable(hud, "on_keys_changed"))
-		connect("lives_changed", Callable(hud, "on_lives_changed"))
-
+	level_manager.level_loaded.connect(_on_level_loaded)
 
 func _process(delta):
-	round_time += delta
-	emit_signal("round_time_changed", round_time)
-	if Input.is_action_pressed("pause"):
-		if get_tree().paused:
-			resume_game()
-		else:
-			pause_menu.set_process(true)
-			pause_game()
-		
-func add_key():
-	keys += 1
-	print("Keys Collected: ", keys)
-	emit_signal("keys_changed", keys)
-	
-func lose_life():
-	Globals.lives -= 1
-	print("Lives: ", Globals.lives)
-	emit_signal("lives_changed", Globals.lives)
-	
-	if Globals.lives <= 0:
-		game_over()
-	
-func game_over():
-	print("Game Over! Going back to main menu.")
-	var main_menu_scene = preload("res://ui/main_menu.tscn")
-	get_tree().change_scene_to_packed(main_menu_scene)
-	
-func record_completion_time():
-	var completion_time = (Time.get_ticks_msec() / 1000.0) - start_time
-	completion_times.append(completion_time)
-	emit_signal("win_time_published", completion_time)
+	if level_running:
+		round_time += delta
+		round_time_changed.emit(round_time)
 
-func _on_level_completed():
-	level_completed = true
-	record_completion_time()
-	#level_manager.on_level_completed()
-	Globals.lives = 3
+func _on_level_loaded(level: Node):
 	keys = 0
+	keys_required = 0
+	deaths = 0
 	round_time = 0.0
-	start_time = Time.get_ticks_msec() / 1000.0
+	for node in level.find_children("*", "", true, false):
+		if node is Key:
+			keys_required += 1
+			node.collected.connect(_on_key_collected)
+		elif node is Chest:
+			node.player_reached.connect(_on_chest_reached.bind(node))
+		elif node is Player:
+			node.died.connect(_on_player_died)
+	level_running = true
+	keys_changed.emit(keys, keys_required)
+	deaths_changed.emit(deaths)
 
-func restart_game_timer() -> void:
-	round_time = 0.0
-	
-func pause_game():
-	if pause_menu:
-		get_tree().paused = true
-		pause_menu.visible = true
+func _on_key_collected():
+	keys += 1
+	keys_changed.emit(keys, keys_required)
 
-func resume_game():
-	if pause_menu:
-		get_tree().paused = false
-		pause_menu.visible = false
+func _on_player_died():
+	deaths += 1
+	deaths_changed.emit(deaths)
+
+func _on_chest_reached(chest: Chest):
+	if not level_running:
+		return
+	if keys < keys_required:
+		hint_shown.emit("Find all the keys first! (%d/%d)" % [keys, keys_required])
+		return
+	level_running = false
+	chest.open()
+	var best_time = save_best_time(level_manager.current_level_name, round_time)
+	level_finished.emit(round_time, best_time, deaths)
+	get_tree().create_timer(LEVEL_END_DELAY, false).timeout.connect(level_manager.on_level_completed)
+
+# Stores the time if it beats the saved one and returns the best time.
+func save_best_time(level_name: String, time: float) -> float:
+	var save = ConfigFile.new()
+	save.load(SAVE_PATH)
+	var best = save.get_value("best_times", level_name, INF)
+	if time < best:
+		best = time
+		save.set_value("best_times", level_name, best)
+		save.save(SAVE_PATH)
+	return best

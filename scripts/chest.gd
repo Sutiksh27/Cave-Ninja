@@ -1,12 +1,19 @@
+class_name Chest
 extends Area2D
 
-@onready var game_manager = get_node("/root/Game/GameManager")
+## Emitted when the player touches the chest; the GameManager decides whether it opens.
+signal player_reached
+
+var opened = false
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-signal level_completed 
 
 func _on_body_entered(body: Node2D) -> void:
-	if game_manager and game_manager.keys == game_manager.KEYS_REQUIRED:
-		emit_signal("level_completed")
-		animated_sprite_2d.play("ChestOpen")
+	if not opened and body is Player:
+		player_reached.emit()
+
+func open():
+	opened = true
+	animated_sprite_2d.play("ChestOpen")
+	$OpenSound.play()

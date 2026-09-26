@@ -13,7 +13,16 @@ func _ready() -> void:
 	handle_connecting_signals()
 	set_process(false)
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
-	
+
+# Runs while paused too (PROCESS_MODE_ALWAYS), so Esc can also resume
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		if visible:
+			resume_game()
+		else:
+			pause_game()
+		get_viewport().set_input_as_handled()
+
 func _on_resume_btn_pressed() -> void:
 	resume_game()
 
@@ -23,7 +32,8 @@ func _on_options_btn_pressed() -> void:
 	options_menu.visible = true
 
 func _on_exit_to_menu_btn_pressed() -> void:
-	get_tree().quit()
+	get_tree().paused = false
+	get_tree().change_scene_to_packed(main_menu_scene)
 	
 func _on_exit_options_menu() -> void:
 	margin_container.visible = true
@@ -45,4 +55,5 @@ func pause_game() -> void:
 func resume_game() -> void:
 	get_tree().paused = false
 	self.visible = false  # Hide the pause menu
+	_on_exit_options_menu()  # Reopen on the main pause page next time
 	set_process(false)

@@ -1,33 +1,38 @@
 extends Control
 
-@onready var game_manager = get_node("/root/Game/GameManager")
+@onready var game_manager = $"../../GameManager"
 @onready var key_label: Label = $KeyLabel
-@onready var life_label: Label = $LifeLabel
+@onready var death_label: Label = $DeathLabel
 @onready var time_label: Label = $TimeLabel
 @onready var win_label: Label = $WinLabel
-@onready var timer: Timer = $"../../GameManager/Timer"
+@onready var hint_timer: Timer = $HintTimer
 
 func _ready():
 	win_label.text = ""
-	life_label.text = "Lives: " + str(Globals.lives)
-	game_manager.connect("keys_changed", Callable(self, "_on_keys_changed"))
-	game_manager.connect("lives_changed", Callable(self, "_on_lives_changed"))
-	game_manager.connect("round_time_changed", Callable(self, "_on_round_time_changed"))
-	game_manager.connect("win_time_published", Callable(self, "_on_win_time_published"))
+	game_manager.keys_changed.connect(_on_keys_changed)
+	game_manager.deaths_changed.connect(_on_deaths_changed)
+	game_manager.round_time_changed.connect(_on_round_time_changed)
+	game_manager.hint_shown.connect(_on_hint_shown)
+	game_manager.level_finished.connect(_on_level_finished)
+	hint_timer.timeout.connect(func(): win_label.text = "")
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
-	
-func _on_keys_changed(keys):
-	key_label.text = str(keys)
-	
-func _on_lives_changed(lives):
-	life_label.text = "Lives: " + str(lives)
+
+func _on_keys_changed(keys, keys_required):
+	key_label.text = "%d/%d" % [keys, keys_required]
+
+func _on_deaths_changed(deaths):
+	death_label.text = "Deaths: %d" % deaths
 
 func _on_round_time_changed(round_time):
-	time_label.text = "Time: " + str(round_time)
-	
-func _on_win_time_published(win_time):
-	win_label.text = "You Won! \n" + "Time: " + str(win_time)
-	timer.start()
-	await timer.timeout
-	win_label.text = ""
-	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	time_label.text = "Time: " + format_time(round_time)
+
+func _on_hint_shown(text):
+	win_label.text = text
+	hint_timer.start()
+
+func _on_level_finished(time, best_time, deaths):
+	hint_timer.stop()
+	win_label.text = "Level Complete!\nTime: %s\nBest: %s\nDeaths: %d" % [format_time(time), format_time(best_time), deaths]
+
+static func format_time(seconds: float) -> String:
+	return "%02d:%05.2f" % [int(seconds) / 60, fmod(seconds, 60.0)]

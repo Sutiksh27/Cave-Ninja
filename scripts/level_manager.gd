@@ -9,13 +9,17 @@ var levels_directory: String = "res://scenes/levels/"
 # Reference to the current level instance
 var current_level: Node = null
 
+# Levels in play order. Level2 and Level3 are unfinished stubs (no keys or chest),
+# so they stay out of the sequence until they are built.
+const LEVEL_SEQUENCE: Array = ["Level1"]
+
 # Signals
-signal level_loaded(level_name: String)
+signal level_loaded(level: Node)
 signal level_completed(level_name: String)
 
 func _ready() -> void:
-	# Load the initial level when the game starts
-	load_level(current_level_name)
+	# Deferred so the GameManager and HUD are ready before the first level_loaded signal
+	load_level.call_deferred(current_level_name)
 	MusicManager.play_level_music()
 	
 
@@ -42,7 +46,7 @@ func load_level(level_name: String) -> void:
 	current_level_name = level_name
 
 	# Emit the signal that the level has been loaded
-	emit_signal("level_loaded", level_name)
+	emit_signal("level_loaded", current_level)
 	print("Level loaded: " + level_name)
 
 # Removes the current level from the scene tree
@@ -58,20 +62,17 @@ func transition_to_next_level() -> void:
 	if next_level_name != "":
 		load_level(next_level_name)
 	else:
-		print("No more levels to load.")
-		# You can handle game completion here, like showing a victory screen
+		# Last level finished: back to the main menu
+		get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 
 # Returns the name of the next level, based on the current level
 func get_next_level_name() -> String:
-	# Define a list of levels in the order they should be played
-	var level_sequence: Array = ["Level1", "Level2", "Level3"]
-
 	# Find the index of the current level
-	var current_index: int = level_sequence.find(current_level_name)
+	var current_index: int = LEVEL_SEQUENCE.find(current_level_name)
 
 	# If the current level is not the last one, return the next level's name
-	if current_index != -1 and current_index < level_sequence.size() - 1:
-		return level_sequence[current_index + 1]
+	if current_index != -1 and current_index < LEVEL_SEQUENCE.size() - 1:
+		return LEVEL_SEQUENCE[current_index + 1]
 
 	# Return an empty string if there are no more levels
 	return ""
